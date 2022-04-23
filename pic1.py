@@ -54,7 +54,7 @@ countries['DR Congo'] = 'COD'
 OECD = ['MEX', 'KOR', 'GRC', 'IND', 'CHL', 'RUS', 'POL', 'LVA', 'ISR', 'ISL', 'IRL', 'EST', 'PRT', 'USA', 'CZE', 'HUN', 'NZL', 'SVK',
         'ITA', 'JPN', 'CAN', 'ESP', 'SVN', 'GBR', 'AUS', 'FIN', 'SWE', 'AUT', 'CHE', 'BEL', 'LUX', 'FRA', 'NLD', 'NOR', 'DNK', 'DEU']
 
-data_pic1 = pd.read_excel('rate.xlsx').values
+data_pic1 = pd.read_excel('./data/rate.xlsx').values
 data1 = []
 data2 = []
 
@@ -78,7 +78,7 @@ data_pic1 = pd.DataFrame(data=data_pic1, columns=[
                          'Rank', 'Country', 'Code', 'Rate'])
 
 data = pd.read_csv(
-    '../../../Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/2dfe0fa92a230fe29ce1f077c1d5353d/Message/MessageTemp/170c7e2058aba9d91775a409a99bf485/File/COGS9_Project/master.csv')
+    './data/master.csv')
 data = data[data['year'] < 2015]
 df0 = data[['year', 'suicides_no']]
 df0 = df0.groupby(['year'], as_index=False).agg({'suicides_no': 'sum'})
