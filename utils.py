@@ -11,7 +11,6 @@ OECD = ['MEX', 'KOR', 'GRC', 'IND', 'CHL', 'RUS', 'POL', 'LVA', 'ISR', 'ISL', 'I
         'NOR', 'DNK', 'DEU']
 
 
-
 def normalize(x):
     return (x - np.mean(x)) / np.std(x)
 
@@ -227,7 +226,8 @@ if __name__ == "__main__":
     hours = get_hours(return_dict=False)
     prods = get_prods(return_dict=False)
     gdp = get_gdp(return_dict=False)
+    wages = get_wages(return_dict=False)
     welfare = get_welfare(return_dict=False)
     latitude = get_latitude(return_dict=False)
     sunshine = get_sunshine(return_dict=False)
-    print(combine_dataframe(rates, hours, prods, gdp, welfare, latitude, sunshine))
+    print(combine_dataframe(rates, hours, prods, gdp, wages, welfare, latitude, sunshine))

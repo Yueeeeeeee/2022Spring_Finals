@@ -1,26 +1,9 @@
 import numpy as np
-import pandas as pd
-import pycountry
-import plotly.express as px
-import plotly.graph_objects as go
-from collections import defaultdict
 from scipy import stats
 from sklearn import linear_model
-from sklearn.model_selection import KFold
 import matplotlib.pyplot as plt
 import seaborn as sns
 from utils import *
-
-
-rates = get_rates(return_dict=False)
-hours = get_hours(return_dict=False)
-prods = get_prods(return_dict=False)
-gdp = get_gdp(return_dict=False)
-welfare = get_welfare(return_dict=False)
-latitude = get_latitude(return_dict=False)
-sunshine = get_sunshine(return_dict=False)
-df = combine_dataframe(rates, hours, prods, gdp, welfare, latitude, sunshine)
-
 
 
 def compute_correlation(df, column1, column2):
@@ -31,6 +14,27 @@ def compute_correlation(df, column1, column2):
     col1 = normalize(col1)
     col2 = normalize(col2)
     return stats.pearsonr(col1, col2)
+
+
+def regression_analysis(df, *columns):
+    print('Correlation Analysis using', columns)
+    columns = list(columns)
+    reg = linear_model.LinearRegression()
+    reg.fit(df[columns], df['Rate'])
+    preds = reg.predict(df[columns])
+    if 'Predictions' in df.columns:
+        df['Predictions'] = preds
+    else:
+        df.insert(df.shape[1], 'Predictions', preds)
+    
+    r, sig = compute_correlation(df, 'Rate', 'Predictions')
+    mse = np.square(df[['Predictions']].values.squeeze(),
+            df[['Rate']].values.squeeze()).mean()
+    
+    print('Suicide Rate and Prediction Correlation: {:.4f}'.format(r))
+    print('Suicide Rate and Prediction P-value: {:.4f}'.format(sig))
+    print('Suicide Rate and Prediction MSE: {:.4f}'.format(mse))
+    return df
 
 
 def visualize(df, column1, column2, regression=True, savepath=None):
@@ -48,33 +52,33 @@ def visualize(df, column1, column2, regression=True, savepath=None):
     plt.xlabel(column1)
     plt.ylabel(column2)
     plt.title(column1 + ' vs. ' + column2)
-    plt.show()
 
     if savepath is not None:
         plt.savefig(savepath)
-
-
-compute_correlation(df, 'Rate', 'Hours')
-visualize(df, 'Hours', 'Rate')
-
-# correlation = stats.pearsonr(normalize(data_pic2['Hours']), normalize(data_pic2['Rate']))
-# print('Pearson Correlation between Annual Working Hours and Suicide Rate is:', correlation)
-# plt.plot(data_pic2['Hours'], data_pic2['Rate'], 'o')
-# plt.xlabel('Annual Working Hours')
-# plt.ylabel('Suicide Rate')
-# plt.title('Suicide Rate vs. Working Hours')
-# plt.show()
     
-# correlation = stats.pearsonr(normalize(data_pic2['Productivity']), normalize(data_pic2['Rate']))
-# print('Pearson Correlation between Productivity and Suicide Rate is:', correlation)
-# plt.plot(data_pic2['Productivity'], data_pic2['Rate'], 'o')
-# plt.xlabel('Productivity')
-# plt.ylabel('Suicide Rate')
-# plt.title('Suicide Rate vs. Productivity')
-# plt.show()
+    plt.show()
 
-# reg = linear_model.LinearRegression()
-# reg.fit(data_pic2[['Hours', 'Productivity']], data_pic2['Rate'])
-# y = reg.predict(data_pic2[['Hours', 'Productivity']])
-# correlation1 = stats.pearsonr(normalize(y), normalize(data_pic2['Rate']))
-# print('Pearson Correlation between Hours + Productivity and Suicide Rate is:', correlation1)
+
+if __name__ == "__main__":
+    rates = get_rates(return_dict=False)
+    hours = get_hours(return_dict=False)
+    prods = get_prods(return_dict=False)
+    gdp = get_gdp(return_dict=False)
+    wages = get_wages(return_dict=False)
+    welfare = get_welfare(return_dict=False)
+    latitude = get_latitude(return_dict=False)
+    sunshine = get_sunshine(return_dict=False)
+    df = combine_dataframe(rates, hours, prods, wages, gdp, welfare, latitude, sunshine)
+
+    visualize(df, 'Hours', 'Rate', savepath='hours_rate.png')
+    visualize(df, 'Productivity', 'Rate', savepath='prod_rate.png')
+    visualize(df, 'GDP', 'Rate', savepath='gdp_rate.png')
+    visualize(df, 'Wages', 'Rate', savepath='wages_rate.png')
+    visualize(df, 'Welfare', 'Rate', savepath='welfare_rate.png')
+    visualize(df, 'Latitude', 'Rate', savepath='lat_rate.png')
+    visualize(df, 'Sunshine', 'Rate', savepath='sum_rate.png')
+
+    df = regression_analysis(df, 'Hours', 'Productivity')
+    df = regression_analysis(df, 'GDP', 'Wages', 'Welfare')
+    df = regression_analysis(df, 'Latitude', 'Sunshine')
+    df = regression_analysis(df, 'Hours', 'Productivity', 'GDP', 'Wages', 'Welfare', 'Latitude', 'Sunshine')

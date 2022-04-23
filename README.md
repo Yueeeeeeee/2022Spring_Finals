@@ -1,6 +1,6 @@
-# 2022 Spring Final Project: Analysis on Socio-Economic and Geographical Factors that Affect the Suicide Rate
+# 2022 Spring Final Project: Analysis on Socio-Economic and Geographical Factors that Affect Suicide Rate
 
-IS 597 PRO Final Projet: Analysis on Socio-Economic and Geographical Factors that Affect the Suicide Rate
+IS 597 PRO Final Projet: Analysis on Socio-Economic and Geographical Factors that Affect Suicide Rate
 by Zhenrui Yue, Huimin Zeng, Mengfei Lan
 
 
