@@ -7,6 +7,13 @@ from utils import *
 
 
 def compute_correlation(df, column1, column2):
+    """Given data frame, compute its pearson correlation.
+
+    :param df: Data Frame
+    :param column1: the first selected column from the data frame
+    :param column2: the second selected column from the data frame
+
+    """
     assert column1 in df.columns
     assert column2 in df.columns
     col1 = df[[column1]].values.squeeze()
@@ -17,6 +24,13 @@ def compute_correlation(df, column1, column2):
 
 
 def regression_analysis(df, *columns):
+    """Perform the regression analysis for the dataframe.
+
+    :param df: Data Frame 
+    :param *columns: columns that would be used for regression analysis
+
+    """
+
     print('Correlation Analysis using', columns)
     columns = list(columns)
     reg = linear_model.LinearRegression()
@@ -38,6 +52,14 @@ def regression_analysis(df, *columns):
 
 
 def visualize(df, column1, column2, regression=True, savepath=None):
+    """Visualize the regression results and the data statistics
+
+    :param df: Data Frame 
+    :param column1: the first selected column from the data frame
+    :param column2: the second selected column from the data frame
+    :param regression: whether visualize regrssion plot or not
+    :param savepath: the path where the visualization will be saved
+    """
     sns.set(style="ticks")
     sns.set_context({"figure.figsize": (8, 5)})
 
