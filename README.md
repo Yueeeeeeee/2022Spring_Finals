@@ -52,9 +52,12 @@ python regression.py
 
 Our data can be downloaded [here](https://drive.google.com/file/d/1DdnFGsSwA2ljzoZdS74ZNuacWskO4Cc0/view?usp=sharing).
 
-Please download data and unzip all files to the data (i.e., ./data/) folder.
+Please download data and unzip all files to the data (i.e., ./data/) folder. Notice only the utils and regression files contain the essential functions for our results, main file and visualization files are only used to generate analysis and figures.
 
 To run our code you need the following data, we manually collect some of them. The running environment can be found in requirements.txt. Contact us if you need more details on our data or env.
+
+
+## References
 
 [1] https://en.wikipedia.org/wiki/Suicide_in_the_United_States
 
