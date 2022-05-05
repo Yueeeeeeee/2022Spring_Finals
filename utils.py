@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import pycountry
+import re
 from collections import defaultdict
 
 
@@ -9,10 +10,6 @@ OECD = ['MEX', 'KOR', 'GRC', 'IND', 'CHL', 'RUS', 'POL', 'LVA', 'ISR', 'ISL', 'I
         'EST', 'PRT', 'USA', 'CZE', 'HUN', 'NZL', 'SVK', 'ITA', 'JPN', 'CAN', 'ESP', \
         'SVN', 'GBR', 'AUS', 'FIN', 'SWE', 'AUT', 'CHE', 'BEL', 'LUX', 'FRA', 'NLD', \
         'NOR', 'DNK', 'DEU']
-
-
-def normalize(x):
-    return (x - np.mean(x)) / np.std(x)
 
 
 source = px.data.gapminder()
@@ -64,14 +61,37 @@ for k, v in COUNTRY_DICT.items():
     COUNTRY_DICT_LOWER[k.lower()] = v
 
 
+def normalize(x):
+    """
+    Normalizing by subtracting mean and dividing by standard deviation.
+
+    :param x: numpy array
+    :returns: normalzied array
+    """
+    return (x - np.mean(x)) / np.std(x)
+
+
 def clean_country_string(code):
+    """
+    Use replace and regular experssion to clean country name.
+
+    :param code: country name in string format
+    :returns: cleaned country name
+    """
     code = code.replace('(more info)', '')
     code = code.replace('[a]', '')
-    code = code.replace('\xa0', '').strip()
+    code = code.replace('\xa0', '')
+    code = re.sub(' +', ' ', code.strip())
     return code
 
 
 def map_to_country_code(code):
+    """
+    Map country name to three letter country code.
+
+    :param code: country name in string format
+    :returns: country code or empty string if there's no match
+    """
     country_code = ''
     if code in COUNTRY_DICT.keys():
         country_code = COUNTRY_DICT[code]
@@ -81,6 +101,12 @@ def map_to_country_code(code):
 
 
 def transform_to_dict(df):
+    """
+    Construct a dictionary based on dataframe.
+
+    :param df: input dataframe with Code column as key
+    :returns: a dictonary with Code as key and rest columns as value
+    """
     out_dict = {}
     keys = df[['Code']].values.squeeze()
     for key in keys:
@@ -89,6 +115,13 @@ def transform_to_dict(df):
 
 
 def get_rates(file_path='./data/rate.xlsx', return_dict=False):
+    """
+    Load suicide rate data and output dataframe or dictionary.
+
+    :param file_path: file path to suicide rate data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with suicide rate data
+    """
     rates = pd.read_excel(file_path).values[:, 1:]
     data = []
     for i in range(len(rates)):
@@ -106,6 +139,13 @@ def get_rates(file_path='./data/rate.xlsx', return_dict=False):
 
 
 def get_hours(file_path='./data/hours.xlsx', return_dict=False):
+    """
+    Load working hours data and output dataframe or dictionary.
+
+    :param file_path: file path to working hours data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with working hours data
+    """
     hours = pd.read_excel(file_path).values
     data = []
     for i in range(len(hours)):
@@ -123,6 +163,13 @@ def get_hours(file_path='./data/hours.xlsx', return_dict=False):
 
 
 def get_prods(file_path='./data/prod.xlsx', return_dict=False):
+    """
+    Load productivity data and output dataframe or dictionary.
+
+    :param file_path: file path to productivity data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with productivity data
+    """
     prods = pd.read_excel(file_path)
     df = prods.groupby(['Code'],as_index=False).agg({'Productivity': 'mean'})
     if return_dict:
@@ -131,6 +178,13 @@ def get_prods(file_path='./data/prod.xlsx', return_dict=False):
 
 
 def get_wages(file_path='./data/wage.xlsx', return_dict=False):
+    """
+    Load average wages data and output dataframe or dictionary.
+
+    :param file_path: file path to average wages data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with average wages data
+    """
     wages = pd.read_excel(file_path).values
     data = []
     for i in range(len(wages)):
@@ -148,6 +202,13 @@ def get_wages(file_path='./data/wage.xlsx', return_dict=False):
 
 
 def get_gdp(file_path='./data/gdp.xlsx', return_dict=False):
+    """
+    Load ppp gdp data and output dataframe or dictionary.
+
+    :param file_path: file path to ppp gdp data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with ppp gdp data
+    """
     gdp = pd.read_excel(file_path).values
     data = []
     for i in range(len(gdp)):
@@ -166,6 +227,13 @@ def get_gdp(file_path='./data/gdp.xlsx', return_dict=False):
 
 
 def get_welfare(file_path='./data/welfare.xlsx', return_dict=False):
+    """
+    Load welfare rate data and output dataframe or dictionary.
+
+    :param file_path: file path to welfare rate data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with welfare rate data
+    """
     welfare = pd.read_excel(file_path).values
     data = []
     for i in range(len(welfare)):
@@ -184,6 +252,13 @@ def get_welfare(file_path='./data/welfare.xlsx', return_dict=False):
 
 
 def get_latitude(file_path='./data/latitude.xlsx', return_dict=False):
+    """
+    Load country latitude data and output dataframe or dictionary.
+
+    :param file_path: file path to country latitude data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with country latitude data
+    """
     latitude = pd.read_excel(file_path).values
     data = []
     for i in range(len(latitude)):
@@ -202,8 +277,14 @@ def get_latitude(file_path='./data/latitude.xlsx', return_dict=False):
 
 
 def get_sunshine(file_path='./data/sunshine.xlsx', return_dict=False):
-    df = pd.read_excel(file_path)
+    """
+    Load country sunshine data and output dataframe or dictionary.
 
+    :param file_path: file path to country sunshine data
+    :param return_dict: if true, returs a dictionary instead of dataframe
+    :returns: a dataframe or dictionary with country sunshine data
+    """
+    df = pd.read_excel(file_path)
     df = df.groupby(['Country'],as_index=False).agg({'Sunshine': 'mean'})
     df["Country"] = df["Country"].map(map_to_country_code)
     df.columns = ['Code', 'Sunshine']
@@ -214,10 +295,17 @@ def get_sunshine(file_path='./data/sunshine.xlsx', return_dict=False):
 
 
 def combine_dataframe(*dfs):
+    """
+    Combine multiple dataframes by country code.
+
+    :param *dfs: multiple input dataframes
+    :returns: a dataframe with input dataframes combined
+    """
     df_out = dfs[0]
     for df in dfs[1:]:
         df_out = df_out.merge(df, on='Code')
     return df_out
+
 
 if __name__ == "__main__":
     print(COUNTRY_DICT)

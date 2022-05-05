@@ -3,8 +3,14 @@
 IS 597 PRO Final Projet: Analysis on Socio-Economic and Geographical Factors that Affect Suicide Rate
 by Zhenrui Yue, Huimin Zeng, Mengfei Lan
 
+<img src=pics/intro.png>
+
 
 ## Data & Requirements
+
+Our data can be downloaded [here](https://drive.google.com/file/d/1DdnFGsSwA2ljzoZdS74ZNuacWskO4Cc0/view?usp=sharing).
+
+Please download data and unzip all files to the data (i.e., ./data/) folder.
 
 To run our code you need the following data, we manually collect some of them. The running environment can be found in requirements.txt. Contact us if you need more details on our data or env.
 
