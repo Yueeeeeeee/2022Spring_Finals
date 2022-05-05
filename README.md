@@ -3,7 +3,21 @@
 IS 597 PRO Final Projet: Analysis on Socio-Economic and Geographical Factors that Affect Suicide Rate
 by Zhenrui Yue, Huimin Zeng, Mengfei Lan
 
-<img src=pics/intro.png>
+<img src=media/intro_trend.png>
+<img src=media/intro_distribution.png>
+
+
+## Usage
+
+Demo can be found in demo.ipynb, which contains the majority of our analysis code and visualization.
+
+Regression analysis is in regression.py, which contains the necessary code to analyze and compute correlation.
+
+Main file generates the trends and distributions of the main data used in our analysis, 2 figures are generated in main file.
+
+Visualization files (visualization1.py etc.) utilize plotly to generate country-specific visualization in a web browser.
+
+File utilities are in utils.py, we have a main function which loads, combines and print the data files.
 
 
 ## Data & Requirements
